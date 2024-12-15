@@ -11,7 +11,7 @@ artifacts_dir = os.path.join(current_dir, "artifacts")
 
 # For deployed environment on Streamlit, if running from a mount or specific path, adjust accordingly
 if "mount" in current_dir:  # For Streamlit deployment (change as needed)
-    artifacts_dir = "/mount/src/health_premium_prediction_app/artifacts"
+    artifacts_dir = "/mount/src/health_premium_prediction_app"
 else:  # Local development environment
     artifacts_dir = os.path.abspath(os.path.join(current_dir, "artifacts"))
 
