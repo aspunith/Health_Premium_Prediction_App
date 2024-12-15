@@ -3,10 +3,10 @@ import joblib
 
 
 # Use raw strings or forward slashes to prevent escape sequence issues
-model_rest = joblib.load("C:/Users/punit/OneDrive/Desktop/AI ML/Machine Learning/Project_1_Healthcare_Premium_Prediction(Regression)/Health Premium prediction app/artifacts/model_rest.joblib")
-model_young = joblib.load("C:/Users/punit/OneDrive/Desktop/AI ML/Machine Learning/Project_1_Healthcare_Premium_Prediction(Regression)/Health Premium prediction app/artifacts/model_young.joblib")
-scaler_rest = joblib.load("C:/Users/punit/OneDrive/Desktop/AI ML/Machine Learning/Project_1_Healthcare_Premium_Prediction(Regression)/Health Premium prediction app/artifacts/scaler_rest.joblib")
-scaler_young = joblib.load("C:/Users/punit/OneDrive/Desktop/AI ML/Machine Learning/Project_1_Healthcare_Premium_Prediction(Regression)/Health Premium prediction app/artifacts/scaler_young.joblib")
+model_rest = joblib.load("artifacts/model_rest.joblib")
+model_young = joblib.load("artifacts/model_young.joblib")
+scaler_rest = joblib.load("artifacts/scaler_rest.joblib")
+scaler_young = joblib.load("artifacts/scaler_young.joblib")
 
 
 
