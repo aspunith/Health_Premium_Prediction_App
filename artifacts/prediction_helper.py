@@ -1,12 +1,22 @@
 import pandas as pd
 import joblib
+import os
 
+# Get the current directory of the script
+current_dir = os.path.dirname(__file__)
 
-# Use raw strings or forward slashes to prevent escape sequence issues
-model_rest = joblib.load("artifacts/model_rest.joblib")
-model_young = joblib.load("artifacts/model_young.joblib")
-scaler_rest = joblib.load("artifacts/scaler_rest.joblib")
-scaler_young = joblib.load("artifacts/scaler_young.joblib")
+# Define relative paths to the models and scalers
+artifacts_dir = os.path.join(current_dir, "artifacts")
+model_rest_path = os.path.join(artifacts_dir, "model_rest.joblib")
+model_young_path = os.path.join(artifacts_dir, "model_young.joblib")
+scaler_rest_path = os.path.join(artifacts_dir, "scaler_rest.joblib")
+scaler_young_path = os.path.join(artifacts_dir, "scaler_young.joblib")
+
+# Load models and scalers
+model_rest = joblib.load(model_rest_path)
+model_young = joblib.load(model_young_path)
+scaler_rest = joblib.load(scaler_rest_path)
+scaler_young = joblib.load(scaler_young_path)
 
 
 
