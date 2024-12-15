@@ -2,32 +2,32 @@ import pandas as pd
 import os
 import joblib
 
-# Define the base directory dynamically (for local or deployed environment)
-current_dir = os.path.dirname(os.path.abspath(__file__))
+# Define the base directory dynamically
+current_dir = r"C:\Users\punit\OneDrive\Desktop\AI ML\Machine Learning\Project_1_Healthcare_Premium_Prediction(Regression)\Health Premium prediction app"
 
-# Define the artifacts directory
-if "artifacts" not in current_dir:
-    artifacts_dir = os.path.join(current_dir, "artifacts")
-else:
-    artifacts_dir = current_dir
+# Define artifacts directory
+artifacts_dir = os.path.join(current_dir, "artifacts")
 
-# Build paths to the model and scalers
+# Debugging: Ensure directory and files are set correctly
+print("Artifacts Directory:", artifacts_dir)
+
+# Paths for model and scaler files
 model_rest_path = os.path.join(artifacts_dir, "model_rest.joblib")
 model_young_path = os.path.join(artifacts_dir, "model_young.joblib")
 scaler_rest_path = os.path.join(artifacts_dir, "scaler_rest.joblib")
 scaler_young_path = os.path.join(artifacts_dir, "scaler_young.joblib")
 
-# Debugging: Print the constructed paths
-print("Artifacts Directory:", artifacts_dir)
+# Debugging: Print paths to ensure correctness
 print("Model Rest Path:", model_rest_path)
 print("Model Young Path:", model_young_path)
 print("Scaler Rest Path:", scaler_rest_path)
 print("Scaler Young Path:", scaler_young_path)
 
-# Verify file existence before loading
-for path in [model_rest_path, model_young_path, scaler_rest_path, scaler_young_path]:
-    if not os.path.exists(path):
-        raise FileNotFoundError(f"File not found: {path}")
+# Verify that all necessary files exist
+required_files = [model_rest_path, model_young_path, scaler_rest_path, scaler_young_path]
+for file_path in required_files:
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"File not found: {file_path}")
 
 # Load models and scalers
 model_rest = joblib.load(model_rest_path)
