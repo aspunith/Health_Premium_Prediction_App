@@ -2,13 +2,20 @@ import pandas as pd
 import os
 import joblib
 
-# Define the base directory dynamically
-current_dir = r"C:\Users\punit\OneDrive\Desktop\AI ML\Machine Learning\Project_1_Healthcare_Premium_Prediction(Regression)\Health Premium prediction app"
+# Define the base directory dynamically (for local or deployed environment)
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Define artifacts directory
+# Define the artifacts directory based on the current environment
+# Local environment: Assuming the `artifacts` folder is in the same directory as this script
 artifacts_dir = os.path.join(current_dir, "artifacts")
 
-# Debugging: Ensure directory and files are set correctly
+# For deployed environment on Streamlit, if running from a mount or specific path, adjust accordingly
+if "mount" in current_dir:  # For Streamlit deployment (change as needed)
+    artifacts_dir = "/mount/src/health_premium_prediction_app/artifacts"
+else:  # Local development environment
+    artifacts_dir = os.path.abspath(os.path.join(current_dir, "artifacts"))
+
+# Debugging: Print the artifacts directory to ensure it's correct
 print("Artifacts Directory:", artifacts_dir)
 
 # Paths for model and scaler files
@@ -36,6 +43,7 @@ scaler_rest = joblib.load(scaler_rest_path)
 scaler_young = joblib.load(scaler_young_path)
 
 print("Models and scalers loaded successfully!")
+
 
 
 def calculate_normalised_risk(medical_history):
