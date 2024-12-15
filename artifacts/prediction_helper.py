@@ -3,22 +3,24 @@ import os
 import joblib
 
 # Define the base directory dynamically (for local or deployed environment)
-current_dir = os.path.dirname(os.path.abspath(__file__))
+artifacts_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Define the artifacts directory dynamically based on deployment environment
-if "mount" in current_dir:  # Check if running in Streamlit deployment
-    artifacts_dir = "/mount/src/health_premium_prediction_app/artifacts"
-else:  # For local environment
-    artifacts_dir = os.path.abspath(os.path.join(current_dir, "artifacts"))
+#if "mount" in current_dir:  # Check if running in Streamlit deployment
+    #artifacts_dir = "/mount/src/health_premium_prediction_app/artifacts"
+#else:  # For local environment
+    #artifacts_dir = os.path.abspath(os.path.join(current_dir, "artifacts"))
 
-# Build paths to the model and scalers
+# Debugging: Print the constructed paths
+print("Artifacts Directory:", artifacts_dir)
+
+# Build paths to the model and scalers without adding an extra 'artifacts' folder
 model_rest_path = os.path.join(artifacts_dir, "model_rest.joblib")
 model_young_path = os.path.join(artifacts_dir, "model_young.joblib")
 scaler_rest_path = os.path.join(artifacts_dir, "scaler_rest.joblib")
 scaler_young_path = os.path.join(artifacts_dir, "scaler_young.joblib")
 
-# Debugging: Print the constructed paths
-print("Artifacts Directory:", artifacts_dir)
+# Print paths for debugging
 print("Model Rest Path:", model_rest_path)
 print("Model Young Path:", model_young_path)
 print("Scaler Rest Path:", scaler_rest_path)
@@ -36,10 +38,6 @@ scaler_rest = joblib.load(scaler_rest_path)
 scaler_young = joblib.load(scaler_young_path)
 
 print("Models and scalers loaded successfully!")
-
-# Your existing functions (calculate_normalised_risk, preprocess_input, handle_scaling, predict)...
-
-
 
 
 def calculate_normalised_risk(medical_history):
