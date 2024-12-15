@@ -5,36 +5,29 @@ import joblib
 # Define the base directory dynamically (for local or deployed environment)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Define the artifacts directory based on the current environment
-# Local environment: Assuming the `artifacts` folder is in the same directory as this script
-artifacts_dir = os.path.join(current_dir, "artifacts")
-
-# For deployed environment on Streamlit, if running from a mount or specific path, adjust accordingly
-if "mount" in current_dir:  # For Streamlit deployment (change as needed)
-    artifacts_dir = "/mount/src/health_premium_prediction_app"
-else:  # Local development environment
+# Define the artifacts directory dynamically based on deployment environment
+if "mount" in current_dir:  # Check if running in Streamlit deployment
+    artifacts_dir = "/mount/src/health_premium_prediction_app/artifacts"
+else:  # For local environment
     artifacts_dir = os.path.abspath(os.path.join(current_dir, "artifacts"))
 
-# Debugging: Print the artifacts directory to ensure it's correct
-print("Artifacts Directory:", artifacts_dir)
-
-# Paths for model and scaler files
+# Build paths to the model and scalers
 model_rest_path = os.path.join(artifacts_dir, "model_rest.joblib")
 model_young_path = os.path.join(artifacts_dir, "model_young.joblib")
 scaler_rest_path = os.path.join(artifacts_dir, "scaler_rest.joblib")
 scaler_young_path = os.path.join(artifacts_dir, "scaler_young.joblib")
 
-# Debugging: Print paths to ensure correctness
+# Debugging: Print the constructed paths
+print("Artifacts Directory:", artifacts_dir)
 print("Model Rest Path:", model_rest_path)
 print("Model Young Path:", model_young_path)
 print("Scaler Rest Path:", scaler_rest_path)
 print("Scaler Young Path:", scaler_young_path)
 
-# Verify that all necessary files exist
-required_files = [model_rest_path, model_young_path, scaler_rest_path, scaler_young_path]
-for file_path in required_files:
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"File not found: {file_path}")
+# Verify file existence before loading
+for path in [model_rest_path, model_young_path, scaler_rest_path, scaler_young_path]:
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"File not found: {path}")
 
 # Load models and scalers
 model_rest = joblib.load(model_rest_path)
@@ -43,6 +36,9 @@ scaler_rest = joblib.load(scaler_rest_path)
 scaler_young = joblib.load(scaler_young_path)
 
 print("Models and scalers loaded successfully!")
+
+# Your existing functions (calculate_normalised_risk, preprocess_input, handle_scaling, predict)...
+
 
 
 
