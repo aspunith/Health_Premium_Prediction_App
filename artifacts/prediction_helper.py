@@ -4,7 +4,7 @@ import os
 import joblib
 
 # Define the directory of the script
-current_dir = os.path.dirname(__file__)
+current_dir = os.path.dirname("C:/Users/punit/OneDrive/Desktop/AI ML/Machine Learning/Project_1_Healthcare_Premium_Prediction(Regression)/Health Premium prediction app/artifacts")
 
 # Define the artifacts directory (only once)
 artifacts_dir = os.path.join(current_dir, "artifacts")
@@ -20,6 +20,12 @@ model_rest = joblib.load(model_rest_path)
 model_young = joblib.load(model_young_path)
 scaler_rest = joblib.load(scaler_rest_path)
 scaler_young = joblib.load(scaler_young_path)
+
+#print("Artifacts Directory:", artifacts_dir)
+#print("Model Rest Path:", model_rest_path)
+#print("Model Young Path:", model_young_path)
+#print("Scaler Rest Path:", scaler_rest_path)
+#print("Scaler Young Path:", scaler_young_path)
 
 
 def calculate_normalised_risk(medical_history):
