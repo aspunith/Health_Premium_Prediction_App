@@ -3,7 +3,8 @@ import os
 import joblib
 
 # Define the base directory dynamically (for local or deployed environment)
-artifacts_dir = os.path.dirname(os.path.abspath(__file__))
+#artifacts_dir = os.path.dirname(os.path.abspath(__file__))
+artifacts_dir = "/mount/src/health_premium_prediction_app/artifacts"
 
 # Define the artifacts directory dynamically based on deployment environment
 #if "mount" in current_dir:  # Check if running in Streamlit deployment
