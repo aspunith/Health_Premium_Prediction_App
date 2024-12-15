@@ -1,16 +1,15 @@
 import pandas as pd
-import joblib
 import os
 import joblib
 
-import os
-import joblib
+# Define the base directory dynamically (for local or deployed environment)
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Define the directory where the script is located
-current_dir = "C:/Users/punit/OneDrive/Desktop/AI ML/Machine Learning/Project_1_Healthcare_Premium_Prediction(Regression)/Health Premium prediction app"  # No need for os.path.dirname()
-
-# Define the artifacts directory (only once)
-artifacts_dir = os.path.join(current_dir, "artifacts")
+# Define the artifacts directory
+if "artifacts" not in current_dir:
+    artifacts_dir = os.path.join(current_dir, "artifacts")
+else:
+    artifacts_dir = current_dir
 
 # Build paths to the model and scalers
 model_rest_path = os.path.join(artifacts_dir, "model_rest.joblib")
@@ -18,23 +17,25 @@ model_young_path = os.path.join(artifacts_dir, "model_young.joblib")
 scaler_rest_path = os.path.join(artifacts_dir, "scaler_rest.joblib")
 scaler_young_path = os.path.join(artifacts_dir, "scaler_young.joblib")
 
-# Debugging: Print paths to verify correctness
+# Debugging: Print the constructed paths
 print("Artifacts Directory:", artifacts_dir)
 print("Model Rest Path:", model_rest_path)
 print("Model Young Path:", model_young_path)
 print("Scaler Rest Path:", scaler_rest_path)
 print("Scaler Young Path:", scaler_young_path)
 
+# Verify file existence before loading
+for path in [model_rest_path, model_young_path, scaler_rest_path, scaler_young_path]:
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"File not found: {path}")
+
 # Load models and scalers
-try:
-    model_rest = joblib.load(model_rest_path)
-    model_young = joblib.load(model_young_path)
-    scaler_rest = joblib.load(scaler_rest_path)
-    scaler_young = joblib.load(scaler_young_path)
-    print("Models and scalers loaded successfully!")
-except FileNotFoundError as e:
-    print(f"FileNotFoundError: {e}")
-    raise
+model_rest = joblib.load(model_rest_path)
+model_young = joblib.load(model_young_path)
+scaler_rest = joblib.load(scaler_rest_path)
+scaler_young = joblib.load(scaler_young_path)
+
+print("Models and scalers loaded successfully!")
 
 
 def calculate_normalised_risk(medical_history):
@@ -46,22 +47,15 @@ def calculate_normalised_risk(medical_history):
         "no disease": 0,
         "none": 0
     }
-    # Split the medical history into potential two parts and convert to lowercase
     diseases = medical_history.lower().split(" & ")
-
-    # Calculate the total risk score by summing the risk scores for each part
-    total_risk_score = sum(risk_scores.get(disease, 0) for disease in diseases)  # Default to 0 if disease not found
-
-    max_score = 14 # risk score for heart disease (8) + second max risk score (6) for diabetes or high blood pressure
-    min_score = 0  # Since the minimum score is always 0
-
-    # Normalize the total risk score
+    total_risk_score = sum(risk_scores.get(disease, 0) for disease in diseases)
+    max_score = 14  # Update this if new conditions are added
+    min_score = 0
     normalized_risk_score = (total_risk_score - min_score) / (max_score - min_score)
-
     return normalized_risk_score
 
+
 def preprocess_input(input_dict):
-    # Define the expected columns and initialize the DataFrame with zeros
     expected_columns = [
         'age', 'number_of_dependants', 'income_lakhs', 'insurance_plan', 'genetical_risk', 'normalised_risk_score',
         'gender_Male', 'region_Northwest', 'region_Southeast', 'region_Southwest', 'marital_status_Unmarried',
@@ -72,9 +66,8 @@ def preprocess_input(input_dict):
     insurance_plan_encoding = {'Bronze': 1, 'Silver': 2, 'Gold': 3}
 
     df = pd.DataFrame(0, columns=expected_columns, index=[0])
-    # df.fillna(0, inplace=True)
 
-    # Manually assign values for each categorical input based on input_dict
+    # Map inputs to DataFrame columns
     for key, value in input_dict.items():
         if key == 'Gender' and value == 'Male':
             df['gender_Male'] = 1
@@ -104,25 +97,25 @@ def preprocess_input(input_dict):
                 df['employment_status_Salaried'] = 1
             elif value == 'Self-Employed':
                 df['employment_status_Self-Employed'] = 1
-        elif key == 'Insurance Plan':  # Correct key usage with case sensitivity
+        elif key == 'Insurance Plan':
             df['insurance_plan'] = insurance_plan_encoding.get(value, 1)
-        elif key == 'Age':  # Correct key usage with case sensitivity
+        elif key == 'Age':
             df['age'] = value
-        elif key == 'Number of Dependants':  # Correct key usage with case sensitivity
+        elif key == 'Number of Dependants':
             df['number_of_dependants'] = value
-        elif key == 'Income in Lakhs':  # Correct key usage with case sensitivity
+        elif key == 'Income in Lakhs':
             df['income_lakhs'] = value
         elif key == "Genetical Risk":
             df['genetical_risk'] = value
 
-    # Assuming the 'normalized_risk_score' needs to be calculated based on the 'age'
+    # Compute normalized risk score
     df['normalised_risk_score'] = calculate_normalised_risk(input_dict['Medical History'])
     df = handle_scaling(input_dict['Age'], df)
 
     return df
 
+
 def handle_scaling(age, df):
-    # scale age and income_lakhs column
     if age <= 25:
         scaler_object = scaler_young
     else:
@@ -131,20 +124,15 @@ def handle_scaling(age, df):
     cols_to_scale = scaler_object['cols_to_scale']
     scaler = scaler_object['scaler']
 
-    df['income_level'] = None # since scaler object expects income_level supply it. This will have no impact on anything
     df[cols_to_scale] = scaler.transform(df[cols_to_scale])
-
-    df.drop('income_level', axis='columns', inplace=True)
 
     return df
 
+
 def predict(input_dict):
     input_df = preprocess_input(input_dict)
-
     if input_dict['Age'] <= 25:
         prediction = model_young.predict(input_df)
     else:
         prediction = model_rest.predict(input_df)
-
     return int(prediction[0])
-
