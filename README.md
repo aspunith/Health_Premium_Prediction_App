@@ -1,5 +1,4 @@
 # Health_Premium_Prediction_App
-# Health Premium Prediction App
 
 ## Project Overview
 The **Health Premium Prediction App** is a machine learning-powered tool designed to predict health insurance premiums based on customer attributes such as age, income level, marital status, number of dependents, insurance plan type, and genetic risk factors. This project offers valuable insights to insurance companies and individuals by identifying patterns in premium pricing.
