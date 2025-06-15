@@ -136,7 +136,7 @@ Explore the application live on Streamlit: [Health Premium Prediction App](https
 
 ## Author
 **A S Punith**  
-Software Engineer | Machine Learning Enthusiast  
+Software Engineer | Machine Learning 
 [LinkedIn](https://www.linkedin.com/in/aspunith) | [GitHub](https://github.com/aspunith)
 
 ---
