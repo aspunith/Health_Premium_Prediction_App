@@ -4,6 +4,10 @@
 The **Health Premium Prediction App** is a machine learning-powered tool designed to predict health insurance premiums based on customer attributes such as age, income level, marital status, number of dependents, insurance plan type, and genetic risk factors. This project offers valuable insights to insurance companies and individuals by identifying patterns in premium pricing.
 
 ---
+## Live Demo
+
+Explore the application live on Streamlit: [Health Premium Prediction App](https://healthpremiumnprediction.streamlit.app/)
+
 
 ## Motivation
 The motivation for this project stems from a curiosity to analyze and uncover the patterns in which people buy insurance policies. This includes understanding the influence of factors such as:
@@ -128,11 +132,6 @@ Health_Premium_Prediction_App/
 2. Experiment with deep learning techniques for better predictions.
 3. Extend the app to provide insights into policy recommendations based on user data.
 
-## Live Demo
-
-Explore the application live on Streamlit: [Health Premium Prediction App](https://healthpremiumnprediction.streamlit.app/)
-
----
 
 ## Author
 **A S Punith**  
